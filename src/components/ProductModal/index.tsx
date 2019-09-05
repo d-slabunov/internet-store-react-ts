@@ -3,18 +3,19 @@ import { Modal, Button, Container } from 'react-bootstrap';
 import { IList } from '../../types';
 import './style.scss';
 
-interface ModalsProps {
+interface IProps {
   data: IList;
-  show: boolean;
-  onHide: any;
+  onHide: () => void;
+  click: () => void;
 }
 
-const Modals: React.FC<ModalsProps> = (props) => {
-  const { data, onHide} = props;
+const ProductModal: React.FC<IProps> = (props) => {
+  const { data, onHide, click} = props;
 
   return (
     <Modal
-      {...props}
+      show={true}
+      onHide={onHide}
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
       centered
@@ -35,10 +36,10 @@ const Modals: React.FC<ModalsProps> = (props) => {
       </Modal.Header>
       <Modal.Footer>
         <Modal.Title>Цена {data.price} ₽</Modal.Title>
-        <Button onClick={onHide}>Добавить в корзину</Button>
+        <Button onClick={click}>Добавить в корзину</Button>
       </Modal.Footer>
     </Modal>
   )
 };
 
-export default Modals
+export default ProductModal;

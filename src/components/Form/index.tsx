@@ -1,62 +1,91 @@
-import React, { useState, useEffect } from 'react';
-import {Navbar, Button} from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import React, { useState } from 'react';
+import { Form, Button, Col, Modal } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import Basket from "../Basket";
-import './style.scss';
+import { deleteAllProduct } from "../../store/actions";
+import {IRootState} from "../../store";
 
-const Header: React.FC<ReturnType<typeof mapStateToProps>> = (props) => {
-  const [modalShow, setModalShow] = useState(false);
-  console.log("HEADER", props)
+interface Props extends ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
+  show: boolean;
+  onHide: () => void;
+  click: () => void;
+}
 
-  const finalPrice = () => {
-    let price = 0;
-    props.products.forEach((item: any) => price += item.price * item.count);
-    return price
-  };
+const Forms: React.FC<Props> = (props) => {
+  const [validated, setValidated] = useState(false);
 
-  const finalCount = () => {
-    let count = 0;
-    props.products.forEach((item: any) => count += item.count);
-    return count
-  };
-
-  const clickOnBasket = () => {
-    setModalShow(!modalShow);
+  const handleSubmit = (event: any) => {
+    const form = event.currentTarget;
+    if (!form.checkValidity()) {
+      event.preventDefault();
+      event.stopPropagation();
+    } else {
+      event.preventDefault();
+      props.deleteAllProduct();
+      props.click();
+    }
+    setValidated(true);
   };
 
   return (
-    <>
-      <Navbar className="header" bg="dark" variant="dark">
-  <Navbar.Brand href="#home">
-  <img
-    alt=""
-  src=""
-  width="30"
-  height="30"
-  className="d-inline-block align-top"
-    />
-    {' React Bootstrap'}
-    </Navbar.Brand>
-    <div className="basket" onClick={() => clickOnBasket()}>
-  <div className="basket__header">
-  <FontAwesomeIcon icon={faTrashAlt} />
-  <div>Basket</div>
-  </div>
-  <div className="basket__footer">
-    <div>{ finalCount() } | </div>
-    <div>{ finalPrice()} rub</div>
-  </div>
-  </div>
-  </Navbar>
-  <Basket onHide={() => clickOnBasket()} show={modalShow}/>
-  </>
-)
+    <Modal
+      {...props}
+      size="lg"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+    >
+      <Modal.Header closeButton>
+        <Modal.Title id="contained-modal-title-vcenter">Оформление заказа</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <Form noValidate validated={validated} onSubmit={handleSubmit}>
+          <Form.Row>
+            <Form.Group as={Col} md="4" controlId="validationCustom01">
+              <Form.Label>Имя</Form.Label>
+              <Form.Control
+                required
+                type="text"
+                placeholder="Имя"
+              />
+            </Form.Group>
+            <Form.Group as={Col} md="4" controlId="validationCustom02">
+              <Form.Label>Фамилия</Form.Label>
+              <Form.Control
+                required
+                type="text"
+                placeholder="Фамилия"
+              />
+            </Form.Group>
+          </Form.Row>
+          <Form.Row>
+            <Form.Group as={Col} md="6" controlId="validationCustom03">
+              <Form.Label>Адрес</Form.Label>
+              <Form.Control type="text" placeholder="Адрес" required/>
+            </Form.Group>
+            <Form.Group as={Col} md="6" controlId="validationCustom04">
+              <Form.Label>Номер телефона</Form.Label>
+              <Form.Control
+                type="tel"
+                pattern="^\d{11}$"
+                placeholder="1-(111)-111-11-11"
+                required/>
+            </Form.Group>
+          </Form.Row>
+          <Form.Row>
+            <Button type="submit">Купить</Button>
+          </Form.Row>
+        </Form>
+      </Modal.Body>
+    </Modal>
+  );
 };
 
-const mapStateToProps = (state: any) => ({
+const mapStateToProps = (state: IRootState) => ({
   products: state.store.products,
 });
 
-export default connect(mapStateToProps)(Header);
+const mapDispatchToProps = (dispatch: any) => ({
+  deleteAllProduct: () => dispatch(deleteAllProduct()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Forms);
+

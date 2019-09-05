@@ -1,0 +1,26 @@
+.product {
+  display: flex;
+  margin: 10px 0;
+
+  &__name {
+    width: 50%;
+  }
+
+  &__minus, &__plus {
+    text-align: center;
+    margin: 0 10px;
+    cursor: pointer;
+    border: 1px solid black;
+    padding: 0 5px;
+    border-radius: 25%;
+  }
+
+  &__price {
+    width: 30%;
+    text-align: end;
+  }
+
+  &__delete {
+    margin-left: 10px;
+  }
+}

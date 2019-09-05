@@ -1,0 +1,39 @@
+.card {
+  width: 30%;
+  min-width: 340px;
+  margin: 15px 0;
+
+  &__header {
+    width: 100%;
+    justify-content: center;
+    display: flex;
+  }
+
+  &__image {
+    margin-top: 5px;
+    width: 280px;
+    height: 280px;
+  }
+
+  &-title {
+    height: 50px;
+  }
+
+  &-text {
+    font-size: 0.8rem;
+    height: 60px;
+  }
+
+  &__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: 0;
+
+    &__text {
+      font-size: 1.3rem;
+      margin: 0;
+      height: fit-content;
+    }
+  }
+}

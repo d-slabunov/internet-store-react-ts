@@ -1,32 +1,31 @@
-import {Button, Card} from "react-bootstrap";
-import React from "react";
-
-<Card style={{ width: '18rem' }}>
-<Card.Img variant="top" src='/1.jpg' />
-  <Card.Body>
-    <Card.Title>Card Title</Card.Title>
-<Card.Text>
-Some quick example text to build on the card title and make up the bulk of
-the card's content.
-</Card.Text>
-<Button variant="primary">Go somewhere</Button>
-</Card.Body>
-</Card>\
-
-
-import React, {Component} from 'react';
-import { Container, Card, Button } from 'react-bootstrap';
+import React from 'react';
+import { Card, Button, Container } from 'react-bootstrap';
+import { IList } from '../../types';
 import './style.scss';
 
-class Content extends React.Component {
-
-  render() {
-    return (
-      <Container>
-
-        </Container>
-    )
-  }
+interface CardsProps {
+  data: IList;
+  openModal: () => void;
 }
 
-export default Content
+const Cards: React.FC<CardsProps> = (props) => {
+  const {data, openModal} = props;
+
+  return (
+    <Card className="card">
+      <div className="card__header">
+        <Card.Img variant="top" className="card__image" src={data.image}/>
+      </div>
+      <Card.Body>
+        <Card.Title>{data.name}</Card.Title>
+        <Card.Text>{data.description}</Card.Text>
+        <Container className="card__footer">
+          <Card.Text className="card__footer__text">Цена: {data.price} ₽</Card.Text>
+          <Button variant="primary" onClick={openModal}>Выбрать</Button>
+        </Container>
+      </Card.Body>
+    </Card>
+  )
+};
+
+export default Cards;
