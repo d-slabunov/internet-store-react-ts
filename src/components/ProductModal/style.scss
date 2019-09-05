@@ -1,0 +1,16 @@
+.modal-container {
+  display: flex;
+  align-items: flex-start;
+
+  &__right {
+    width: 60%;
+  }
+
+  .modal-title {
+    margin-bottom: 20px;
+  }
+}
+
+.modal-footer {
+  justify-content: space-between;
+}
